@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 app = Flask(__name__)
 
 
@@ -6,7 +6,7 @@ app = Flask(__name__)
 def puppiesFunction():
     if request.method == 'GET':
         return getAllPuppies()
-    elif reques.method == 'POST':
+    elif request.method == 'POST':
         return makeANewPuppy()
 
 
