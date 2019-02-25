@@ -32,7 +32,9 @@ def puppiesFunctionId(id):
         return getPuppy(id)
 
     if request.method == 'PUT':
-        return updatePuppy(id)
+        name = request.args.get('name', '')
+        description = request.args.get('description', '')
+        return updatePuppy(id,name, description)
 
     elif request.method == 'DELETE':
         return deletePuppy(id)
