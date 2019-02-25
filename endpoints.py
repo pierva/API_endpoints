@@ -10,7 +10,7 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
-app = Flask(__name__) 
+app = Flask(__name__)
 
 
 @app.route('/puppies', methods=['GET', 'POST'])
@@ -33,23 +33,35 @@ def puppiesFunctionId(id):
         return deletePuppy(id)
 
 
-def puppiesFunctionId(id):
-  return "This method will act on the puppy with id %s" % id
-
 def getAllPuppies():
-  return "Getting All the puppies!"
-
-def makeANewPuppy():
-  return "Creating A New Puppy!"
+  puppies = session.query(Puppy).all()
+  return jsonify(Puppies=[i.serialize for i in puppies])
 
 def getPuppy(id):
-	return "Getting Puppy with id %s" % id
+  puppy = session.query(Puppy).filter_by(id = id).one()
+  return jsonify(puppy=puppy.serialize)
 
-def updatePuppy(id):
-  return "Updating a Puppy with id %s" % id
+def makeANewPuppy(name,description):
+  puppy = Puppy(name = name, description = description)
+  session.add(puppy)
+  session.commit()
+  return jsonify(Puppy=puppy.serialize)
+
+def updatePuppy(id,name, description):
+  puppy = session.query(Puppy).filter_by(id = id).one()
+  if not name:
+    puppy.name = name
+  if not description:
+    puppy.description = description
+  session.add(puppy)
+  session.commit()
+  return "Updated a Puppy with id %s" % id
 
 def deletePuppy(id):
-  return "Removing Puppy with id %s" % id
+  puppy = session.query(Puppy).filter_by(id = id).one()
+  session.delete(puppy)
+  session.commit()
+  return "Removed Puppy with id %s" % id
 
 
 if __name__ == '__main__':
