@@ -1,5 +1,16 @@
-from flask import Flask, request
-app = Flask(__name__)
+from flask import Flask, request, jsonify
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from models import Base, Puppy
+
+
+engine = create_engine('sqlite:///puppies.db')
+Base.metadata.bind = engine
+
+DBSession = sessionmaker(bind=engine)
+session = DBSession()
+
+app = Flask(__name__) 
 
 
 @app.route('/puppies', methods=['GET', 'POST'])
