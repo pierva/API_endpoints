@@ -11,6 +11,7 @@ def puppiesFunction():
 
 
 @app.route('/puppies/<int:id>', methods=['GET', 'PUT', 'DELETE'])
+def puppiesFunctionId(id):
     if request.method == 'GET':
         return getPuppy(id)
 
