@@ -12,13 +12,18 @@ session = DBSession()
 
 app = Flask(__name__)
 
-
+@app.route("/")
 @app.route('/puppies', methods=['GET', 'POST'])
 def puppiesFunction():
     if request.method == 'GET':
         return getAllPuppies()
     elif request.method == 'POST':
-        return makeANewPuppy()
+        print "Making a New puppy"
+        name = request.args.get('name', '')
+        description = request.args.get('description', '')
+        print name
+        print description
+        return makeANewPuppy(name, description)
 
 
 @app.route('/puppies/<int:id>', methods=['GET', 'PUT', 'DELETE'])
